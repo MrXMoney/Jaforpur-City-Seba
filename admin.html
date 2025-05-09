@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>অ্যাডমিন প্যানেল</title>
+  <script>
+    function checkPassword() {
+      const input = document.getElementById('password').value;
+      if (input === '123456') {
+        document.getElementById('admin-content').style.display = 'block';
+        document.getElementById('login-box').style.display = 'none';
+      } else {
+        alert('ভুল পাসওয়ার্ড!');
+      }
+    }
+  </script>
+</head>
+<body style="font-family: 'Noto Sans Bengali', sans-serif; padding: 20px;">
+  <div id="login-box">
+    <h3>অ্যাডমিন লগইন</h3>
+    <input type="password" id="password" placeholder="পাসওয়ার্ড দিন"/>
+    <button onclick="checkPassword()">লগইন</button>
+  </div>
+  <div id="admin-content" style="display:none;">
+    <h2>অ্যাডমিন কন্ট্রোল প্যানেল</h2>
+    <p>এখানে আপনি নতুন রক্তদাতা অনুমোদন অথবা বাতিল করতে পারবেন।</p>
+  </div>
+</body>
+</html>
