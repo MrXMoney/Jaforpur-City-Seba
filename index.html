@@ -52,6 +52,30 @@
       color: blue;
       text-decoration: none;
     }
+    /* New 3D Button Style */
+    .new-donor-btn {
+      display: inline-block;
+      padding: 12px 30px;
+      font-size: 18px;
+      color: white;
+      background: linear-gradient(145deg, #3b8d99, #2c6b7f);
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2), 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 20px auto;
+      display: block;
+    }
+    .new-donor-btn:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 6px 30px rgba(0,0,0,0.15);
+      transform: translateY(-4px);
+    }
+    .new-donor-btn:active {
+      transform: translateY(2px);
+    }
     .form-container {
       max-width: 500px;
       margin: 20px auto;
@@ -91,10 +115,13 @@
   <h1>জাফরপুর সিটি সেবা</h1>
   <h2>রক্তদাতার তালিকা এবং নিবন্ধন</h2>
 
+  <!-- New Donor Button -->
+  <a href="#donor-form" class="new-donor-btn">নতুন ডোনার অ্যাড</a>
+
   <!-- Donor Form -->
-  <div class="form-container">
+  <div id="donor-form" class="form-container">
     <h3>নতুন রক্তদাতা হিসেবে নিবন্ধন করুন</h3>
-    <form id="donor-form">
+    <form id="donor-form-submit">
       <input type="text" id="name" placeholder="আপনার নাম" required />
       <input type="text" id="address" placeholder="ঠিকানা" required />
       <input type="tel" id="phone" placeholder="মোবাইল নম্বর" required />
@@ -130,7 +157,7 @@
     const db = firebase.firestore();
 
     // Handle donor form submission
-    document.getElementById('donor-form').addEventListener('submit', function(e) {
+    document.getElementById('donor-form-submit').addEventListener('submit', function(e) {
       e.preventDefault();
       
       const name = document.getElementById('name').value;
@@ -148,7 +175,7 @@
         approved: false // Initially, pending approval
       }).then(() => {
         alert("আপনার নিবন্ধন পাঠানো হয়েছে। অ্যাডমিন কর্তৃক অনুমোদন পেলে তা তালিকায় প্রদর্শিত হবে।");
-        document.getElementById('donor-form').reset();
+        document.getElementById('donor-form-submit').reset();
       }).catch((error) => {
         console.error("Error adding document: ", error);
         alert("কিছু সমস্যা হয়েছে, পরে আবার চেষ্টা করুন।");
