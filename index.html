@@ -1,48 +1,91 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>রক্তদাতা তালিকা</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jaforpur City Seba - Donors</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Noto Sans Bengali', sans-serif;
-      background: #f0f0f0;
-      margin: 0;
+      background: #f9f9f9;
       padding: 20px;
+      margin: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
     }
     .card {
       background: linear-gradient(145deg, #ffffff, #e6e6e6);
       border-radius: 20px;
-      box-shadow: 10px 10px 30px #bebebe, -10px -10px 30px #ffffff;
-      margin: 20px auto;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
       padding: 20px;
-      max-width: 350px;
-      text-align: center;
+      margin: 15px auto;
+      max-width: 400px;
+      transition: 0.3s;
+      cursor: pointer;
     }
-    .blood {
-      font-size: 24px;
-      font-weight: bold;
-      color: red;
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
     }
-    .name, .phone, .address {
-      margin: 10px 0;
+    .title {
+      font-size: 22px;
+      color: crimson;
+      margin-bottom: 10px;
     }
-    .phone a {
-      color: #0066cc;
+    .contact {
+      font-size: 18px;
+    }
+    .call-link {
+      color: blue;
       text-decoration: none;
-      font-weight: bold;
+    }
+    .loading {
+      text-align: center;
+      font-size: 20px;
+      color: #3498db;
     }
   </style>
 </head>
 <body>
-  <h2 style="text-align:center;">রক্তদাতা তালিকা</h2>
-  <div class="card">
-    <div class="blood">A+</div>
-    <div class="name">নাম: জসিম উদ্দিন</div>
-    <div class="phone">মোবাইল: <a href="tel:017xxxxxxxx">017xxxxxxxx</a></div>
-    <div class="address">ঠিকানা: ঢাকাপুর, যশোর</div>
-  </div>
+  <h1>রক্তদাতার তালিকা</h1>
+  <div id="donor-list"></div>
+  <div class="loading" id="loading">লোড হচ্ছে...</div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCjQv5iAcG7pCmRFyzT9p6KfDMSmkW_Czs",
+      authDomain: "jaforpur-city-seba.firebaseapp.com",
+      projectId: "jaforpur-city-seba",
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    db.collection("donors").where("approved", "==", true).get().then((querySnapshot) => {
+      const list = document.getElementById('donor-list');
+      const loading = document.getElementById('loading');
+      loading.style.display = 'none';  // Hide loading message
+
+      querySnapshot.forEach((doc) => {
+        const d = doc.data();
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="title">${d.name} (${d.blood})</div>
+          <div class="contact">ঠিকানা: ${d.address}</div>
+          <div class="contact">মোবাইল: <a class="call-link" href="tel:${d.phone}">${d.phone}</a></div>
+        `;
+        list.appendChild(card);
+      });
+    }).catch((error) => {
+      const loading = document.getElementById('loading');
+      loading.textContent = 'ডেটা লোড করতে সমস্যা হয়েছে। পুনরায় চেষ্টা করুন।';
+    });
+  </script>
 </body>
 </html>
