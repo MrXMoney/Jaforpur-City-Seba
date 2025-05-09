@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>রক্তদাতা তালিকা</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <style>
+    body {
+      font-family: 'Noto Sans Bengali', sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #d50000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: linear-gradient(145deg, #ffffff, #e6e6e6);
+      box-shadow: 5px 5px 15px #ccc, -5px -5px 15px #fff;
+      border-radius: 15px;
+      width: 300px;
+      margin: 15px;
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card h3 {
+      margin-top: 0;
+    }
+    .call-btn {
+      background: #d50000;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>রক্তদাতা তালিকা</header>
+  <div class="container" id="donorList"></div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCjQv5iAcG7pCmRFyzT9p6KfDMSmkW_Czs",
+      authDomain: "jaforpur-city-seba.firebaseapp.com",
+      projectId: "jaforpur-city-seba",
+      storageBucket: "jaforpur-city-seba.firebasestorage.app",
+      messagingSenderId: "64439419555",
+      appId: "1:64439419555:web:c5fed573927c8548ee7516",
+      measurementId: "G-9PNHKPCQML",
+      databaseURL: "https://jaforpur-city-seba-default-rtdb.firebaseio.com"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    db.ref("donors").on("value", snapshot => {
+      const donors = snapshot.val();
+      const list = document.getElementById("donorList");
+      list.innerHTML = "";
+      for (let id in donors) {
+        const donor = donors[id];
+        if (donor.status === "approved") {
+          list.innerHTML += `
+            <div class="card">
+              <h3>${donor.name}</h3>
+              <p>রক্তের গ্রুপ: ${donor.blood}</p>
+              <p>ঠিকানা: ${donor.address}</p>
+              <p>মোবাইল: ${donor.phone}</p>
+              <a href="tel:${donor.phone}" class="call-btn">কল করুন</a>
+            </div>
+          `;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
