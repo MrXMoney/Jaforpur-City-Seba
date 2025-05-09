@@ -52,6 +52,7 @@
       color: blue;
       text-decoration: none;
     }
+
     /* New 3D Button Style */
     .new-donor-btn {
       display: inline-block;
@@ -76,17 +77,25 @@
     .new-donor-btn:active {
       transform: translateY(2px);
     }
+
+    /* Registration Form Style */
     .form-container {
+      display: none; /* Initially hidden */
       max-width: 500px;
       margin: 20px auto;
       background: #fff;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transform: translateY(-30px);
+      transition: all 0.3s ease-in-out;
+    }
+    .form-container.show {
+      display: block;
+      transform: translateY(0);
     }
     .form-container input,
     .form-container select,
-    .form-container textarea,
     .form-container button {
       width: 100%;
       padding: 12px;
@@ -103,11 +112,7 @@
     .form-container button:hover {
       background-color: #27ae60;
     }
-    .loading {
-      text-align: center;
-      font-size: 20px;
-      color: #3498db;
-    }
+
   </style>
 </head>
 <body>
@@ -116,7 +121,7 @@
   <h2>রক্তদাতার তালিকা এবং নিবন্ধন</h2>
 
   <!-- New Donor Button -->
-  <a href="#donor-form" class="new-donor-btn">নতুন ডোনার অ্যাড</a>
+  <a href="javascript:void(0);" class="new-donor-btn" onclick="toggleForm()">নতুন ডোনার অ্যাড</a>
 
   <!-- Donor Form -->
   <div id="donor-form" class="form-container">
@@ -136,14 +141,12 @@
         <option value="AB-">AB-</option>
         <option value="O-">O-</option>
       </select>
-      <textarea id="message" placeholder="অতিরিক্ত বার্তা (ঐচ্ছিক)"></textarea>
       <button type="submit">নিবন্ধন করুন</button>
     </form>
   </div>
 
   <!-- Donor List -->
   <div id="donor-list"></div>
-  <div class="loading" id="loading">লোড হচ্ছে...</div>
 
   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
@@ -156,6 +159,12 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    // Toggle the form visibility
+    function toggleForm() {
+      const form = document.getElementById('donor-form');
+      form.classList.toggle('show');
+    }
+
     // Handle donor form submission
     document.getElementById('donor-form-submit').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -164,18 +173,17 @@
       const address = document.getElementById('address').value;
       const phone = document.getElementById('phone').value;
       const blood = document.getElementById('blood').value;
-      const message = document.getElementById('message').value;
 
       db.collection("donors").add({
         name: name,
         address: address,
         phone: phone,
         blood: blood,
-        message: message,
         approved: false // Initially, pending approval
       }).then(() => {
         alert("আপনার নিবন্ধন পাঠানো হয়েছে। অ্যাডমিন কর্তৃক অনুমোদন পেলে তা তালিকায় প্রদর্শিত হবে।");
         document.getElementById('donor-form-submit').reset();
+        toggleForm();  // Hide the form after submission
       }).catch((error) => {
         console.error("Error adding document: ", error);
         alert("কিছু সমস্যা হয়েছে, পরে আবার চেষ্টা করুন।");
@@ -185,9 +193,6 @@
     // Load approved donors
     db.collection("donors").where("approved", "==", true).get().then((querySnapshot) => {
       const list = document.getElementById('donor-list');
-      const loading = document.getElementById('loading');
-      loading.style.display = 'none';  // Hide loading message
-
       querySnapshot.forEach((doc) => {
         const d = doc.data();
         const card = document.createElement('div');
@@ -200,8 +205,7 @@
         list.appendChild(card);
       });
     }).catch((error) => {
-      const loading = document.getElementById('loading');
-      loading.textContent = 'ডেটা লোড করতে সমস্যা হয়েছে। পুনরায় চেষ্টা করুন।';
+      console.error("Error getting documents: ", error);
     });
   </script>
 </body>
