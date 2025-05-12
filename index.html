@@ -2,154 +2,57 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jaforpur City Seba - Donors</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>জাফরপুর সিটি সেবা - Donors</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Roboto Slab', serif;
-      background: #f0f2f5;
-      margin: 0;
-      padding: 20px;
+      background: #f9fafb;
     }
-
-    /* 3D Header Title */
     .main-title {
       font-family: 'Shadows Into Light', cursive;
-      font-size: 48px;
-      text-align: center;
-      color: #fff;
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      margin-bottom: 30px;
-      animation: floatText 3s ease-in-out infinite;
-      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-    }
-
-    @keyframes floatText {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-
-    /* New Donor Button with Animation */
-    .new-donor-btn {
-      display: inline-block;
-      padding: 12px 30px;
-      font-size: 18px;
-      color: white;
-      background: linear-gradient(145deg, #3b8d99, #2c6b7f);
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-      cursor: pointer;
-      margin: 0 auto 30px;
-      display: block;
-      transition: all 0.3s ease;
-    }
-
-    .new-donor-btn:hover {
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transform: scale(1.05);
-      animation: buttonHover 0.5s ease-in-out infinite;
-    }
-
-    @keyframes buttonHover {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
-    /* Donor Card */
-    .card {
-      background: linear-gradient(145deg, #ffffff, #e0e0e0);
-      border-radius: 20px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-      padding: 25px;
-      margin: 20px auto;
-      max-width: 400px;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-    }
-
-    .title {
-      font-size: 22px;
-      color: #c0392b;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    .blood-group-badge {
-      background-color: #e74c3c;
-      color: #fff;
-      font-weight: bold;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      display: inline-block;
-      margin-top: 5px;
-    }
-
-    .contact {
-      font-size: 17px;
-      margin: 5px 0;
-    }
-
-    .call-link {
-      color: #2980b9;
-      text-decoration: none;
-    }
-
-    /* Form Styling */
-    .form-container input, .form-container select, .form-container button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    .form-container button {
-      background-color: #27ae60;
-      color: white;
-      border: none;
-      cursor: pointer;
     }
   </style>
 </head>
-<body>
+<body class="p-4">
 
-  <div class="main-title">জাফরপুর সিটি সেবা</div>
+  <!-- Header -->
+  <header class="text-center mb-8">
+    <h1 class="main-title text-4xl text-white py-6 rounded-xl shadow-lg bg-gradient-to-r from-red-400 to-red-600 animate-bounce">জাফরপুর সিটি সেবা</h1>
+    <div class="mt-4 flex justify-center gap-4">
+      <button onclick="toggleForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded shadow-md transition">নতুন সদস্য যোগ করুন</button>
+      <a href="https://mrxmoney.github.io/Jisan-Hossain-Badun-/" target="_blank" class="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2 rounded shadow-md transition">Developer</a>
+    </div>
+  </header>
 
-  <a href="javascript:void(0);" class="new-donor-btn" onclick="toggleForm()">নতুন সদস্য এড করুন</a>
+  <!-- Search Bar -->
+  <div class="max-w-2xl mx-auto mb-6">
+    <input type="text" id="search-input" placeholder="রক্তের গ্রুপ লিখুন যেমন: A+, O-" class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
+  </div>
 
-  <!-- Donor Form (hidden by default) -->
-  <div id="donor-form" class="form-container" style="display:none; max-width: 450px; margin: auto;">
+  <!-- Donor Form -->
+  <div id="donor-form" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow mb-8 hidden">
     <form id="donor-form-submit">
-      <input type="text" id="name" placeholder="আপনার নাম" required />
-      <input type="text" id="address" placeholder="ঠিকানা" required />
-      <input type="tel" id="phone" placeholder="মোবাইল নম্বর" required />
-      <select id="blood" required>
+      <input type="text" id="name" placeholder="নাম" required class="w-full mb-3 border rounded px-4 py-2"/>
+      <input type="text" id="address" placeholder="ঠিকানা" required class="w-full mb-3 border rounded px-4 py-2"/>
+      <input type="tel" id="phone" placeholder="মোবাইল নম্বর" required class="w-full mb-3 border rounded px-4 py-2"/>
+      <select id="blood" required class="w-full mb-4 border rounded px-4 py-2">
         <option value="" disabled selected>রক্তের গ্রুপ নির্বাচন করুন</option>
         <option value="A+">A+</option><option value="B+">B+</option>
         <option value="AB+">AB+</option><option value="O+">O+</option>
         <option value="A-">A-</option><option value="B-">B-</option>
         <option value="AB-">AB-</option><option value="O-">O-</option>
       </select>
-      <button type="submit">নিবন্ধন করুন</button>
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">নিবন্ধন করুন</button>
     </form>
   </div>
 
   <!-- Donor List -->
-  <div id="donor-list"></div>
+  <div id="donor-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"></div>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase & Script -->
   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
   <script>
@@ -163,9 +66,10 @@
 
     function toggleForm() {
       const form = document.getElementById('donor-form');
-      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+      form.classList.toggle('hidden');
     }
 
+    // Donor submit
     document.getElementById('donor-form-submit').addEventListener('submit', function(e) {
       e.preventDefault();
       const name = document.getElementById('name').value;
@@ -174,10 +78,7 @@
       const blood = document.getElementById('blood').value;
 
       db.collection("donors").add({
-        name: name,
-        address: address,
-        phone: phone,
-        blood: blood,
+        name, address, phone, blood,
         approved: false
       }).then(() => {
         alert("নিবন্ধন সফল হয়েছে। অনুমোদনের পরে তালিকায় দেখানো হবে।");
@@ -186,20 +87,35 @@
       });
     });
 
+    // Donor list + Filter
+    let allDonors = [];
     db.collection("donors").where("approved", "==", true).get().then((querySnapshot) => {
-      const list = document.getElementById('donor-list');
       querySnapshot.forEach((doc) => {
-        const d = doc.data();
+        allDonors.push(doc.data());
+      });
+      renderDonors(allDonors);
+    });
+
+    function renderDonors(data) {
+      const list = document.getElementById('donor-list');
+      list.innerHTML = '';
+      data.forEach((d) => {
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = 'bg-white rounded-xl shadow p-4 hover:shadow-lg transition';
         card.innerHTML = `
-          <div class="title">${d.name}</div>
-          <div class="blood-group-badge">${d.blood}</div>
-          <div class="contact">ঠিকানা: ${d.address}</div>
-          <div class="contact">মোবাইল: <a class="call-link" href="tel:${d.phone}">${d.phone}</a></div>
+          <h2 class="text-xl font-bold text-red-600 mb-2">${d.name}</h2>
+          <div class="inline-block bg-red-500 text-white text-sm px-3 py-1 rounded-full mb-2">${d.blood}</div>
+          <p class="text-gray-700">ঠিকানা: ${d.address}</p>
+          <p class="text-gray-700">মোবাইল: <a class="text-blue-600 hover:underline" href="tel:${d.phone}">${d.phone}</a></p>
         `;
         list.appendChild(card);
       });
+    }
+
+    document.getElementById('search-input').addEventListener('input', function(e) {
+      const value = e.target.value.trim().toUpperCase();
+      const filtered = allDonors.filter(d => d.blood.toUpperCase().includes(value));
+      renderDonors(filtered);
     });
   </script>
 </body>
